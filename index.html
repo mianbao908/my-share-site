@@ -1,0 +1,3799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>方子睿 · 高中生 & 未来汽车工程师</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ====== 新增动画样式 ====== */
+        
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: var(--primary);
+            border-right-color: var(--primary);
+            animation: spin 1s linear infinite, pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        /* 浮动背景元素 */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.05;
+            filter: blur(20px);
+        }
+        
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 10%;
+            left: 5%;
+            animation: float-1 25s infinite ease-in-out;
+        }
+        
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--secondary);
+            top: 60%;
+            right: 10%;
+            animation: float-2 30s infinite ease-in-out;
+        }
+        
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            background: var(--accent);
+            bottom: 20%;
+            left: 15%;
+            animation: float-3 20s infinite ease-in-out;
+        }
+        
+        @keyframes float-1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, 50px) rotate(120deg); }
+            66% { transform: translate(-20px, -30px) rotate(240deg); }
+        }
+        
+        @keyframes float-2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-40px, 20px) rotate(120deg); }
+            66% { transform: translate(20px, -40px) rotate(240deg); }
+        }
+        
+        @keyframes float-3 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(25px, -25px) rotate(120deg); }
+            66% { transform: translate(-25px, 25px) rotate(240deg); }
+        }
+        
+        /* 打字机效果 */
+        .typewriter {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 3px solid var(--primary);
+            white-space: nowrap;
+            animation: typing 3.5s steps(30, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+        
+        /* 渐变文字动画 */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 5s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+        }
+        
+        /* 呼吸动画 */
+        .breathe {
+            animation: breathe 6s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        /* 卡片3D翻转效果 */
+        .card-3d {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(5deg) rotateX(5deg) translateY(-10px);
+        }
+        
+        /* 按钮波纹效果 */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .ripple:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(40, 40);
+                opacity: 0;
+            }
+        }
+        
+        /* 鼠标跟随粒子容器 */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        
+        /* 滚动视差效果 */
+        .parallax-element {
+            transition: transform 0.3s ease-out;
+        }
+        
+        /* 悬停震动效果 */
+        .hover-shake:hover {
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        /* 闪烁效果 */
+        .blink {
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* ====== 原有样式 ====== */
+        
+        /* 新增：头像区域样式 */
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+        
+        .avatar-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 15px 40px rgba(56, 178, 255, 0.3);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: relative;
+            z-index: 2;
+        }
+        
+        .avatar-image .avatar-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: transform 0.5s ease;
+        }
+        
+        .avatar-image:hover .avatar-photo {
+            transform: scale(1.05);
+        }
+        
+        .avatar-name {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        
+        .avatar-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* 调整原intro-tags的位置 */
+        .intro-tags {
+            margin-top: 20px;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 900px) {
+            .avatar-section {
+                justify-content: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .avatar-name {
+                font-size: 1.8rem;
+            }
+            
+            /* 在移动设备上禁用一些动画 */
+            .floating-shapes {
+                display: none;
+            }
+            
+            .typewriter {
+                animation: none;
+                border-right: none;
+            }
+        }
+        
+        /* 之前的所有其他样式保持不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* 天蓝色主题 (默认) */
+            --primary: #38B2FF;
+            --secondary: #7ACFFF;
+            --accent: #FF7B9C;
+            --olive: #7ACFFF;
+            --music: #7ACFFF;
+            --mech: #7ACFFF;
+            --bg: #F0F9FF;
+            --surface: #FFFFFF;
+            --border: rgba(56, 178, 255, 0.2);
+            --text: #1A2B3C;
+            --text-secondary: #4A5B6C;
+            --text-tertiary: #7A8B9C;
+            --pet-bg: #E6F4FF;
+            --transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            --shadow: 0 12px 36px rgba(56, 178, 255, 0.12);
+            --shadow-hover: 0 20px 50px rgba(56, 178, 255, 0.2);
+            --radius: 24px;
+            --radius-small: 14px;
+            --radius-tiny: 8px;
+            --cursor-size: 30px;
+            --cursor-border: 2px;
+        }
+
+        .theme-dark {
+            --primary: #4DB8FF;
+            --secondary: #8BCDFF;
+            --accent: #FF9DB8;
+            --olive: #8BCDFF;
+            --music: #8BCDFF;
+            --mech: #8BCDFF;
+            --bg: #0A192F;
+            --surface: #1E3A5F;
+            --border: rgba(77, 184, 255, 0.3);
+            --text: #F0F8FF;
+            --text-secondary: #CBD5E1;
+            --text-tertiary: #94A3B8;
+            --pet-bg: #1A2F4F;
+            --shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* 自定义光标样式 */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+            cursor: none;
+            transition: background-color 0.6s ease, color 0.6s ease;
+        }
+        
+        /* 光标容器 */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 默认光标 - 天蓝色圆环 */
+        .cursor-default {
+            border: var(--cursor-border) solid var(--primary);
+            background-color: transparent;
+            box-shadow: 0 0 15px rgba(56, 178, 255, 0.4);
+        }
+        
+        /* 悬停时放大的光标 */
+        .cursor-hover {
+            width: calc(var(--cursor-size) * 1.5);
+            height: calc(var(--cursor-size) * 1.5);
+        }
+        
+        /* 点击时的光标 */
+        .cursor-click {
+            width: calc(var(--cursor-size) * 0.8);
+            height: calc(var(--cursor-size) * 0.8);
+        }
+        
+        /* 光标悬停提示 */
+        .cursor-hint {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+        
+        .cursor:hover .cursor-hint {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
+        }
+        
+        /* 交互元素悬停样式 */
+        a, button, .btn, .nav a, .social-link, .interest-card, .pet-container, .contact-icon, input, select, textarea {
+            position: relative;
+        }
+        
+        .pet-image, .pet-card, .pet-detail, .btn-olive {
+            position: relative;
+        }
+        
+        /* 主题切换按钮 */
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1001;
+            width: 50px;
+            height: 50px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            font-size: 20px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px) scale(1.08) rotate(15deg);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .theme-toggle .fa-moon { display: none; }
+        .theme-toggle .fa-sun { display: block; }
+
+        .theme-dark .theme-toggle .fa-moon { display: block; }
+        .theme-dark .theme-toggle .fa-sun { display: none; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+        
+        /* 导航栏 */
+        .nav {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: auto;
+            padding: 16px 32px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(56, 178, 255, 0.15);
+            border-radius: 60px;
+            display: flex;
+            gap: 48px;
+            transition: var(--transition);
+            box-shadow: 0 10px 40px rgba(56, 178, 255, 0.12);
+        }
+        
+        .theme-dark .nav {
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(56, 178, 255, 0.25);
+        }
+        
+        .nav:hover {
+            border-color: var(--primary);
+            box-shadow: 0 15px 50px rgba(56, 178, 255, 0.18);
+            transform: translateX(-50%) translateY(-3px);
+        }
+        
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15.5px;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+        }
+        
+        .nav a i {
+            font-size: 17px;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav a:hover {
+            color: var(--primary);
+        }
+        
+        .nav a:hover i {
+            transform: translateY(-2px);
+        }
+        
+        .nav a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+            animation: navUnderline 0.4s ease-out;
+        }
+        
+        @keyframes navUnderline {
+            from { width: 0%; left: 50%; }
+            to { width: 100%; left: 0%; }
+        }
+        
+        /* 主内容区域 */
+        .main {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 160px 0 100px;
+        }
+        
+        .main::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 178, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 左栏 - 个人介绍 */
+        .left-column {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .intro-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        
+        .intro-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14.5px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .intro-tag:hover {
+            transform: translateY(-3px);
+        }
+        
+        .tag-student {
+            background: linear-gradient(135deg, rgba(56, 178, 255, 0.12), rgba(56, 178, 255, 0.06));
+            color: var(--primary);
+            border: 1px solid rgba(56, 178, 255, 0.15);
+            box-shadow: 0 4px 12px rgba(56, 178, 255, 0.08);
+        }
+        
+        .tag-mech {
+            background: linear-gradient(135deg, rgba(56, 178, 255, 0.12), rgba(56, 178, 255, 0.06));
+            color: var(--primary);
+            border: 1px solid rgba(56, 178, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(56, 178, 255, 0.1);
+        }
+        
+        .tag-music {
+            background: linear-gradient(135deg, rgba(56, 178, 255, 0.12), rgba(56, 178, 255, 0.06));
+            color: var(--primary);
+            border: 1px solid rgba(56, 178, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(56, 178, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.08;
+            margin-bottom: 20px;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+        
+        .name {
+            display: block;
+            font-size: 4.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, #A6E0FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 8px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 180px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            border-radius: 2px;
+            opacity: 0.5;
+        }
+        
+        .subtitle {
+            font-size: 1.35rem;
+            color: var(--text-secondary);
+            margin-bottom: 36px;
+            max-width: 520px;
+            line-height: 1.6;
+            font-weight: 400;
+            padding-left: 4px;
+        }
+        
+        .highlight {
+            color: var(--primary);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            padding: 0 2px;
+        }
+        
+        .highlight-olive {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .highlight-mech {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .highlight-music {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            opacity: 0.25;
+            z-index: -1;
+            border-radius: 4px;
+        }
+        
+        /* 宠物标签 */
+        .pet-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(56, 178, 255, 0.15), rgba(56, 178, 255, 0.08));
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 500;
+            margin-top: 28px;
+            color: var(--primary);
+            border: 1px solid rgba(56, 178, 255, 0.25);
+            box-shadow: 0 6px 20px rgba(56, 178, 255, 0.12);
+            transition: var(--transition);
+        }
+        
+        .pet-tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(56, 178, 255, 0.2);
+        }
+        
+        .pet-tag i {
+            font-size: 16px;
+        }
+        
+        /* CTA按钮 */
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-small);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 15.5px;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.7s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            box-shadow: 0 10px 30px rgba(56, 178, 255, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0E8FFF, #2BA5FF);
+            box-shadow: 0 15px 40px rgba(56, 178, 255, 0.4);
+        }
+        
+        .btn-olive {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            box-shadow: 0 10px 30px rgba(56, 178, 255, 0.3);
+        }
+        
+        .btn-olive:hover {
+            background: linear-gradient(135deg, #0E8FFF, #2BA5FF);
+            box-shadow: 0 15px 40px rgba(56, 178, 255, 0.4);
+        }
+        
+        /* ====== 右栏 - 宠物Olive展示 ====== */
+        .right-column {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            min-height: 600px;
+        }
+        
+        .pet-container {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pet-card {
+            width: 100%;
+            min-height: 500px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 40px 35px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: visible;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            gap: 30px;
+        }
+        
+        .pet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(56, 178, 255, 0.05) 0%, rgba(122, 207, 255, 0.05) 100%);
+            z-index: 1;
+        }
+        
+        .pet-card:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .pet-image-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            margin-bottom: 10px;
+        }
+        
+        .pet-image {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 6px solid white;
+            box-shadow: 0 20px 50px rgba(56, 178, 255, 0.25);
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        /* 宠物照片样式 */
+        .pet-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: transform 0.5s ease;
+        }
+        
+        .pet-image:hover .pet-photo {
+            transform: scale(1.05);
+        }
+        
+        .pet-info {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding-top: 15px;
+        }
+        
+        .pet-name {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .pet-name .olive-text {
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .pet-name .olive-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            opacity: 0.4;
+            border-radius: 2px;
+        }
+        
+        .pet-breed {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+        
+        .pet-breed i {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .pet-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-weight: 400;
+            max-width: 100%;
+            padding: 0 10px;
+        }
+        
+        .pet-stats {
+            display: flex;
+            gap: 28px;
+            margin-top: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .pet-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: var(--transition);
+            min-width: 70px;
+        }
+        
+        .pet-stat:hover {
+            transform: translateY(-5px);
+        }
+        
+        .pet-stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 6px;
+            text-shadow: 0 2px 4px rgba(56, 178, 255, 0.2);
+        }
+        
+        .pet-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        /* 个人特点部分 */
+        .section {
+            padding: 120px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 70px;
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+            letter-spacing: -0.5px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 650px;
+            line-height: 1.6;
+            margin-bottom: 60px;
+        }
+        
+        /* 兴趣网格 */
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 36px;
+            margin-top: 40px;
+        }
+        
+        .interest-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            height: 100%;
+        }
+        
+        .interest-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .interest-card:hover::before {
+            opacity: 1;
+        }
+        
+        .interest-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .interest-card.mech:hover {
+            border-color: var(--primary);
+        }
+        
+        .interest-card.music:hover {
+            border-color: var(--primary);
+        }
+        
+        .interest-card.pets:hover {
+            border-color: var(--primary);
+        }
+        
+        .interest-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+        
+        .interest-card:hover .interest-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .mech .interest-icon, .music .interest-icon, .pets .interest-icon {
+            background: linear-gradient(135deg, rgba(56, 178, 255, 0.15), rgba(56, 178, 255, 0.08));
+            color: var(--primary);
+            border: 1px solid rgba(56, 178, 255, 0.2);
+        }
+        
+        .interest-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.3;
+            color: var(--text);
+        }
+        
+        .interest-desc {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            flex-grow: 1;
+            font-size: 15.5px;
+            line-height: 1.7;
+        }
+        
+        .interest-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        
+        .interest-tag {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .interest-tag:hover {
+            transform: translateY(-2px);
+        }
+        
+        .mech .interest-tag, .music .interest-tag, .pets .interest-tag {
+            background: linear-gradient(135deg, rgba(56, 178, 255, 0.1), rgba(56, 178, 255, 0.05));
+            color: var(--primary);
+            border: 1px solid rgba(56, 178, 255, 0.15);
+        }
+        
+        /* 关于我和Olive部分 */
+        .about-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 70px;
+            margin-top: 40px;
+        }
+        
+        .about-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 44px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .about-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 28px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .about-card h3 i {
+            font-size: 22px;
+        }
+        
+        .about-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 15.5px;
+        }
+        
+        .about-content p {
+            margin-bottom: 24px;
+        }
+        
+        .pet-details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 32px;
+        }
+        
+        .pet-detail {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            border-radius: var(--radius-small);
+            background: rgba(56, 178, 255, 0.05);
+            border: 1px solid rgba(56, 178, 255, 0.1);
+            transition: var(--transition);
+        }
+        
+        .pet-detail:hover {
+            background: rgba(56, 178, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .pet-detail-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(56, 178, 255, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        /* 学术与活动部分 */
+        .academics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 36px;
+            margin-top: 40px;
+        }
+        
+        .academic-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .academic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .academic-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 24px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .academic-card h3 i {
+            font-size: 20px;
+        }
+        
+        .academic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .academic-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 12px;
+            border-radius: var(--radius-small);
+            background: rgba(56, 178, 255, 0.05);
+            border: 1px solid rgba(56, 178, 255, 0.1);
+            transition: var(--transition);
+        }
+        
+        .academic-item:hover {
+            background: rgba(56, 178, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .academic-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(56, 178, 255, 0.12);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        /* 联系部分 */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 70px;
+            align-items: start;
+            margin-top: 40px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 16px;
+            border-radius: var(--radius-small);
+            background: rgba(56, 178, 255, 0.05);
+            border: 1px solid rgba(56, 178, 255, 0.1);
+            transition: var(--transition);
+        }
+        
+        .contact-item:hover {
+            background: rgba(56, 178, 255, 0.1);
+            transform: translateX(8px);
+        }
+        
+        .contact-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(56, 178, 255, 0.12);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--primary);
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        
+        .contact-item:hover .contact-icon {
+            background: rgba(56, 178, 255, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .contact-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .contact-text p {
+            color: var(--text-secondary);
+            font-size: 15.5px;
+        }
+        
+        /* 社交媒体 */
+        .social-links {
+            display: flex;
+            gap: 18px;
+            margin-top: 36px;
+        }
+        
+        .social-link {
+            width: 52px;
+            height: 52px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        
+        .social-link:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            transform: translateY(-5px) scale(1.1);
+            color: white;
+            box-shadow: 0 15px 35px rgba(56, 178, 255, 0.3);
+        }
+        
+        /* 联系表单 */
+        .contact-form {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 44px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .contact-form:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .contact-form h3 {
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+        
+        .contact-form .form-desc {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            font-size: 15.5px;
+            line-height: 1.7;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 32px;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            padding: 18px;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-small);
+            color: var(--text);
+            font-size: 15.5px;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(56, 178, 255, 0.15);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 140px;
+            line-height: 1.6;
+        }
+        
+        .form-submit {
+            margin-top: 10px;
+            width: 100%;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        /* 页脚 */
+        .footer {
+            padding: 80px 0 50px;
+            border-top: 1px solid var(--border);
+            margin-top: 100px;
+            background: var(--pet-bg);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .footer-text {
+            color: var(--text-tertiary);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .footer-emoji {
+            font-size: 20px;
+        }
+        
+        .footer-nav {
+            display: flex;
+            gap: 28px;
+        }
+        
+        .footer-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 4px 0;
+        }
+        
+        .footer-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-nav a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .main-content {
+                gap: 60px;
+            }
+            
+            h1 {
+                font-size: 3.4rem;
+            }
+            
+            .name {
+                font-size: 4rem;
+            }
+            
+            .pet-card {
+                max-width: 420px;
+                min-height: 480px;
+            }
+            
+            .pet-image {
+                width: 220px;
+                height: 220px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 80px;
+                text-align: center;
+            }
+            
+            .right-column {
+                order: -1;
+                min-height: 500px;
+            }
+            
+            .pet-container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            
+            .pet-card {
+                max-width: 100%;
+                min-height: 480px;
+            }
+            
+            .pet-image {
+                width: 200px;
+                height: 200px;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .name {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .cta-buttons {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px;
+            }
+            
+            .nav {
+                padding: 14px 24px;
+                gap: 32px;
+                top: 20px;
+            }
+            
+            .nav a span {
+                display: none;
+            }
+            
+            .nav a i {
+                font-size: 20px;
+            }
+            
+            .theme-toggle {
+                top: 20px;
+                right: 20px;
+                width: 46px;
+                height: 46px;
+                font-size: 18px;
+            }
+            
+            .main {
+                padding: 140px 0 80px;
+            }
+            
+            h1 {
+                font-size: 2.6rem;
+            }
+            
+            .name {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2.4rem;
+            }
+            
+            .pet-name {
+                font-size: 2rem;
+            }
+            
+            .pet-breed {
+                font-size: 1.1rem;
+            }
+            
+            .interests-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            
+            .about-container, .academics-container, .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-nav {
+                justify-content: center;
+            }
+            
+            /* 在移动设备上恢复默认光标 */
+            .cursor {
+                display: none;
+            }
+            
+            body {
+                cursor: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .nav {
+                gap: 24px;
+                padding: 12px 20px;
+            }
+            
+            .intro-tags {
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .name {
+                font-size: 2.6rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .pet-card {
+                padding: 30px 25px;
+                min-height: 450px;
+            }
+            
+            .pet-image {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .pet-name {
+                font-size: 1.8rem;
+            }
+            
+            .pet-breed {
+                font-size: 1rem;
+            }
+            
+            .pet-stats {
+                gap: 20px;
+            }
+            
+            .pet-stat-value {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(56, 178, 255, 0.08);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+        
+        /* 卡片入场动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 加载动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 页面加载效果 */
+        .page-load {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        /* ====== 新增的音乐歌单样式 ====== */
+        .song-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .song-item:hover {
+            background: rgba(56, 178, 255, 0.15) !important;
+            transform: translateX(5px);
+        }
+        
+        .music-player {
+            animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(50px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        /* 歌单折叠动画 */
+        .playlist-collapsed {
+            overflow: hidden;
+            max-height: 120px;
+            transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .playlist-expanded {
+            max-height: 1200px;
+            transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .playlist-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, var(--surface));
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 15px;
+            pointer-events: none;
+        }
+        
+        .playlist-expanded .playlist-overlay {
+            display: none;
+        }
+        
+        .expand-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            pointer-events: auto;
+            box-shadow: 0 4px 12px rgba(56, 178, 255, 0.3);
+        }
+        
+        .expand-btn:hover {
+            background: #0E8FFF;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(56, 178, 255, 0.4);
+        }
+        
+        .expand-btn i {
+            transition: transform 0.3s ease;
+        }
+        
+        .playlist-expanded .expand-btn i {
+            transform: rotate(180deg);
+        }
+        
+        /* 歌单项样式 */
+        .song-list-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 16px;
+            border-radius: var(--radius-small);
+            background: rgba(56, 178, 255, 0.05);
+            border: 1px solid rgba(56, 178, 255, 0.1);
+            transition: var(--transition);
+            margin-bottom: 12px;
+        }
+        
+        .song-list-item:hover {
+            background: rgba(56, 178, 255, 0.12);
+            transform: translateX(5px);
+        }
+        
+        .song-number {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .song-info-container {
+            flex: 1;
+        }
+        
+        .song-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        
+        .song-artist {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .song-duration {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            flex-shrink: 0;
+        }
+        
+        .song-favorite {
+            color: #FFD700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        /* Olive照片网格样式 */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .photo-item {
+            border-radius: var(--radius-small);
+            overflow: hidden;
+            height: 250px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .photo-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-item:hover .photo-overlay {
+            transform: translateY(0);
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            animation: scaleIn 0.3s ease;
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        
+        /* 简化版Olive部分样式 */
+        .olive-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .gallery-intro {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .gallery-item {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .gallery-caption {
+            padding: 20px;
+            background: var(--surface);
+        }
+        
+        .gallery-caption h4 {
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        
+        .gallery-caption p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* 简化Olive信息卡片 */
+        .olive-simple-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .olive-info-item {
+            padding: 20px;
+            background: rgba(56, 178, 255, 0.05);
+            border-radius: var(--radius);
+            border: 1px solid rgba(56, 178, 255, 0.1);
+            transition: var(--transition);
+        }
+        
+        .olive-info-item:hover {
+            background: rgba(56, 178, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .olive-info-item i {
+            font-size: 30px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loader" id="loader">
+        <div class="loader-circle"></div>
+    </div>
+    
+    <!-- 浮动背景元素 -->
+    <div class="floating-shapes">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+    </div>
+    
+    <!-- 鼠标跟随粒子容器 -->
+    <div class="particles-container" id="particlesContainer"></div>
+    
+    <!-- 自定义光标 -->
+    <div class="cursor cursor-default" id="customCursor">
+        <div class="cursor-hint" id="cursorHint"></div>
+    </div>
+    
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="themeToggle" aria-label="切换浅色/深色模式">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <!-- 导航栏 -->
+    <nav class="nav">
+        <a href="#home" class="active">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="#interests">
+            <i class="fas fa-heart"></i>
+            <span>我的兴趣</span>
+        </a>
+        <a href="#playlist">
+            <i class="fas fa-music"></i>
+            <span>音乐歌单</span>
+        </a>
+        <a href="#olive-gallery">
+            <i class="fas fa-dog"></i>
+            <span>Olive相册</span>
+        </a>
+        <a href="#about">
+            <i class="fas fa-user"></i>
+            <span>关于我们</span>
+        </a>
+        <a href="#contact">
+            <i class="fas fa-envelope"></i>
+            <span>联系</span>
+        </a>
+    </nav>
+    
+    <!-- 主内容 -->
+    <main class="main" id="home">
+        <div class="container">
+            <div class="main-content">
+                <div class="left-column page-load">
+                    <!-- 新增：个人头像区域 -->
+                    <div class="avatar-section">
+                        <div class="avatar-container">
+                            <div class="avatar-image hover-shake">
+                                <!-- 请将你的照片命名为：fangzirui.jpg 并放在同一目录下 -->
+                                <img src="fangzirui.jpg" 
+                                     alt="方子睿 - 高中生 & 未来汽车工程师" 
+                                     class="avatar-photo">
+                            </div>
+                        </div>
+                        <div class="avatar-text">
+                            <h2 class="avatar-name gradient-text">方子睿</h2>
+                            <div class="avatar-subtitle">高中生 · 未来汽车工程师</div>
+                        </div>
+                    </div>
+                    
+                    <div class="intro-tags">
+                        <div class="intro-tag tag-student hover-shake">
+                            <i class="fas fa-graduation-cap"></i>
+                            高中生
+                        </div>
+                        <div class="intro-tag tag-mech hover-shake">
+                            <i class="fas fa-car"></i>
+                            未来汽车工程师
+                        </div>
+                        <div class="intro-tag tag-music hover-shake">
+                            <i class="fas fa-music"></i>
+                            音乐爱好者
+                        </div>
+                    </div>
+                    <h1>
+                        你好，我是
+                        <span class="name typewriter">方子睿</span>
+                    </h1>
+                    <div class="subtitle">
+                        一名对<span class="highlight-mech">汽车工程</span>充满热情的高中生，热爱<span class="highlight-music">音乐</span>创作，同时是<span class="highlight-olive">Olive</span>的专属人类。我相信<span class="highlight">创造力</span>和<span class="highlight">逻辑思维</span>可以完美结合，就像精密的汽车机械与动人的艺术设计一样。
+                    </div>
+                    
+                    <div class="pet-tag hover-shake">
+                        <i class="fas fa-paw"></i>
+                        Olive的专属人类 · 2024年10月3日出生
+                    </div>
+                    
+                    <div class="cta-buttons">
+                        <a href="#interests" class="btn btn-primary ripple card-3d">
+                            <i class="fas fa-heart"></i>
+                            了解我的兴趣
+                        </a>
+                        <a href="#playlist" class="btn ripple card-3d">
+                            <i class="fas fa-music"></i>
+                            查看我的歌单
+                        </a>
+                        <a href="#olive-gallery" class="btn btn-olive ripple card-3d">
+                            <i class="fas fa-dog"></i>
+                            看Olive相册
+                        </a>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div class="pet-container page-load">
+                        <div class="pet-card card-3d breathe">
+                            <div class="pet-image-container">
+                                <div class="pet-image hover-shake">
+                                    <!-- 宠物照片放在这里 -->
+                                    <!-- 照片文件名必须是：olive.jpg -->
+                                    <img src="olive.jpg" 
+                                         alt="Olive - 可爱的比熊犬" 
+                                         class="pet-photo">
+                                </div>
+                            </div>
+                            <div class="pet-info">
+                                <h3 class="pet-name">
+                                    <span class="olive-text gradient-text">Olive</span>
+                                </h3>
+                                <div class="pet-breed">
+                                    <i class="fas fa-paw"></i>
+                                    白色卷毛比熊犬 · 活泼亲人
+                                </div>
+                                <p class="pet-description">2024年10月3日出生的小天使，方子睿的忠实伙伴与灵感源泉。拥有蓬松的卷毛和温柔的性格，总是能给生活带来欢乐。</p>
+                                
+                                <div class="pet-stats">
+                                    <div class="pet-stat hover-shake">
+                                        <span class="pet-stat-value blink">🐾</span>
+                                        <span class="pet-stat-label">活泼</span>
+                                    </div>
+                                    <div class="pet-stat hover-shake">
+                                        <span class="pet-stat-value blink">❤️</span>
+                                        <span class="pet-stat-label">亲人</span>
+                                    </div>
+                                    <div class="pet-stat hover-shake">
+                                        <span class="pet-stat-value blink">🌀</span>
+                                        <span class="pet-stat-label">卷毛</span>
+                                    </div>
+                                    <div class="pet-stat hover-shake">
+                                        <span class="pet-stat-value blink">🎂</span>
+                                        <span class="pet-stat-label">10月</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- 兴趣部分 -->
+    <section class="section" id="interests">
+        <div class="container">
+            <h2 class="section-title gradient-text">我的兴趣与热情</h2>
+            <p class="section-subtitle">探索我热爱的事物，从汽车工程到音乐创作，再到与Olive的日常。这些兴趣不仅塑造了我的个性，也指引着我的未来方向。</p>
+            
+            <div class="interests-grid">
+                <div class="interest-card fade-in mech card-3d">
+                    <div class="interest-icon hover-shake">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3 class="interest-title">汽车工程</h3>
+                    <p class="interest-desc">我对汽车机械原理、动力系统和工程设计充满热情，渴望理解并创造更高效、更智能的交通工具。目前正在为进入车辆工程专业做准备，目标是深度参与汽车工业的创新。</p>
+                    <div class="interest-tags">
+                        <span class="interest-tag hover-shake">汽车机械</span>
+                        <span class="interest-tag hover-shake">动力系统</span>
+                        <span class="interest-tag hover-shake">车辆设计</span>
+                        <span class="interest-tag hover-shake">空气动力学</span>
+                        <span class="interest-tag hover-shake">新能源车</span>
+                    </div>
+                    <a href="#academics" class="btn ripple" style="align-self: flex-start; background: linear-gradient(135deg, rgba(56, 178, 255, 0.15), rgba(56, 178, 255, 0.08)); color: var(--primary); border-color: rgba(56, 178, 255, 0.25);">
+                        <i class="fas fa-arrow-right"></i>
+                        了解更多
+                    </a>
+                </div>
+                
+                <div class="interest-card fade-in music card-3d">
+                    <div class="interest-icon hover-shake">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3 class="interest-title">音乐创作</h3>
+                    <p class="interest-desc">音乐是我表达情感和创造力的方式。我会弹钢琴、双排键和长笛，喜欢唱歌和创作自己的音乐作品。除了Justin Bieber，我也喜欢Kendrick Lamar的音乐，特别是《DAMN.》这张专辑。</p>
+                    <div class="interest-tags">
+                        <span class="interest-tag hover-shake">钢琴</span>
+                        <span class="interest-tag hover-shake">双排键</span>
+                        <span class="interest-tag hover-shake">长笛</span>
+                        <span class="interest-tag hover-shake">Kendrick Lamar</span>
+                        <span class="interest-tag hover-shake">Justin Bieber</span>
+                    </div>
+                    <a href="#playlist" class="btn ripple" style="align-self: flex-start; background: linear-gradient(135deg, rgba(56, 178, 255, 0.15), rgba(56, 178, 255, 0.08)); color: var(--primary); border-color: rgba(56, 178, 255, 0.25);">
+                        <i class="fas fa-arrow-right"></i>
+                        查看我的歌单
+                    </a>
+                </div>
+                
+                <div class="interest-card fade-in pets card-3d">
+                    <div class="interest-icon hover-shake">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <h3 class="interest-title">宠物与Olive</h3>
+                    <p class="interest-desc">Olive是我生活中不可或缺的一部分。照顾她让我学会了责任和耐心，她的陪伴也给我的学习和创作带来了无限灵感。我们共同成长，分享每一天的快乐。</p>
+                    <div class="interest-tags">
+                        <span class="interest-tag hover-shake">比熊护理</span>
+                        <span class="interest-tag hover-shake">宠物训练</span>
+                        <span class="interest-tag hover-shake">动物行为</span>
+                        <span class="interest-tag hover-shake">宠物摄影</span>
+                        <span class="interest-tag hover-shake">健康管理</span>
+                    </div>
+                    <a href="#olive-gallery" class="btn ripple" style="align-self: flex-start; background: linear-gradient(135deg, rgba(56, 178, 255, 0.15), rgba(56, 178, 255, 0.08)); color: var(--primary); border-color: rgba(56, 178, 255, 0.25);">
+                        <i class="fas fa-arrow-right"></i>
+                        看Olive相册
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 音乐歌单分享部分 -->
+    <section class="section" id="playlist">
+        <div class="container">
+            <h2 class="section-title gradient-text">我的音乐世界</h2>
+            <p class="section-subtitle">分享我的音乐品味和创作灵感，从Justin Bieber到Kendrick Lamar，探索多元的音乐风格。</p>
+            
+            <div class="playlist-container fade-in card-3d" style="background: var(--surface); border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow); border: 1px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white;">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 8px; color: var(--text);">方子睿的精选歌单</h3>
+                        <p style="color: var(--text-secondary);">更新于 2025年2月 · 15首歌曲 · 流行/说唱/节奏布鲁斯</p>
+                    </div>
+                </div>
+                
+                <!-- 歌单列表（初始折叠状态） -->
+                <div class="playlist-collapsed" id="playlistContent">
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">1</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Stay</div>
+                            <div class="song-artist">Justin Bieber</div>
+                        </div>
+                        <div class="song-duration">3:32</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">2</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Ghost</div>
+                            <div class="song-artist">Justin Bieber</div>
+                        </div>
+                        <div class="song-duration">3:33</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">3</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Peaches</div>
+                            <div class="song-artist">Justin Bieber ft. Daniel Caesar & Giveon</div>
+                        </div>
+                        <div class="song-duration">3:18</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">4</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Intentions</div>
+                            <div class="song-artist">Justin Bieber ft. Quavo</div>
+                        </div>
+                        <div class="song-duration">3:33</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">5</div>
+                        <div class="song-info-container">
+                            <div class="song-title">DNA.</div>
+                            <div class="song-artist">Kendrick Lamar</div>
+                        </div>
+                        <div class="song-duration">3:06</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">6</div>
+                        <div class="song-info-container">
+                            <div class="song-title">LOVE.</div>
+                            <div class="song-artist">Kendrick Lamar ft. Zacari</div>
+                        </div>
+                        <div class="song-duration">3:33</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">7</div>
+                        <div class="song-info-container">
+                            <div class="song-title">HUMBLE.</div>
+                            <div class="song-artist">Kendrick Lamar</div>
+                        </div>
+                        <div class="song-duration">2:57</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">8</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Yummy</div>
+                            <div class="song-artist">Justin Bieber</div>
+                        </div>
+                        <div class="song-duration">3:30</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">9</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Sorry</div>
+                            <div class="song-artist">Justin Bieber</div>
+                        </div>
+                        <div class="song-duration">3:20</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">10</div>
+                        <div class="song-info-container">
+                            <div class="song-title">What Do You Mean?</div>
+                            <div class="song-artist">Justin Bieber</div>
+                        </div>
+                        <div class="song-duration">3:25</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">11</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Holy</div>
+                            <div class="song-artist">Justin Bieber ft. Chance the Rapper</div>
+                        </div>
+                        <div class="song-duration">3:32</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">12</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Hold On</div>
+                            <div class="song-artist">Justin Bieber</div>
+                        </div>
+                        <div class="song-duration">2:50</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">13</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Lonely</div>
+                            <div class="song-artist">Justin Bieber & benny blanco</div>
+                        </div>
+                        <div class="song-duration">2:29</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">14</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Anyone</div>
+                            <div class="song-artist">Justin Bieber</div>
+                        </div>
+                        <div class="song-duration">3:10</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="song-list-item hover-shake">
+                        <div class="song-number">15</div>
+                        <div class="song-info-container">
+                            <div class="song-title">Baby</div>
+                            <div class="song-artist">Justin Bieber ft. Ludacris</div>
+                        </div>
+                        <div class="song-duration">3:36</div>
+                        <div class="song-favorite">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="playlist-overlay">
+                        <button class="expand-btn" id="expandPlaylistBtn">
+                            <i class="fas fa-chevron-down"></i>
+                            展开查看完整歌单 (15首歌曲)
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--border); margin-top: 20px;">
+                    <div style="color: var(--text-secondary); font-size: 14px;">
+                        <i class="fas fa-headphones"></i> 最近在听：<span style="color: var(--primary); font-weight: 600;">Justin Bieber《Justice》专辑</span>
+                    </div>
+                    <button class="btn ripple" id="spotifyBtn" style="padding: 10px 24px; font-size: 14px; background: linear-gradient(135deg, rgba(56, 178, 255, 0.15), rgba(56, 178, 255, 0.08)); color: var(--primary); border-color: rgba(56, 178, 255, 0.25);">
+                        <i class="fab fa-spotify"></i> 更多推荐
+                    </button>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px;">
+                <div class="fade-in card-3d" style="background: var(--surface); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); border: 1px solid var(--border);">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--text); display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-guitar" style="color: var(--primary);"></i> 专辑推荐
+                    </h3>
+                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+                        <div style="width: 70px; height: 70px; border-radius: 8px; background: linear-gradient(135deg, #FF6B6B, #FF8E53); display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; flex-shrink: 0; font-weight: bold;">
+                            J
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 8px; color: var(--text);">Justice - Justin Bieber</h4>
+                            <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">2021年发行的第六张录音室专辑，充满希望和治愈的力量，包含多首热门单曲。</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border);">
+                            <span style="color: var(--text-secondary);">发行年份</span>
+                            <span style="color: var(--primary); font-weight: 600;">2021</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border);">
+                            <span style="color: var(--text-secondary);">流派</span>
+                            <span style="color: var(--primary); font-weight: 600;">流行/节奏布鲁斯</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0;">
+                            <span style="color: var(--text-secondary);">最爱曲目</span>
+                            <span style="color: var(--primary); font-weight: 600;">Ghost, Peaches, Holy</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in card-3d" style="background: var(--surface); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); border: 1px solid var(--border);">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--text); display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-star" style="color: var(--primary);"></i> 音乐偶像
+                    </h3>
+                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+                        <div style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; flex-shrink: 0;">
+                            JB
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 8px; color: var(--text);">Justin Bieber</h4>
+                            <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">从《Baby》到《Justice》，他的音乐旅程给我很多创作灵感。最喜欢他的真诚和音乐中的情感表达。</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #FF6B6B, #FF8E53); display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; flex-shrink: 0; font-weight: bold;">
+                            KL
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 8px; color: var(--text);">Kendrick Lamar</h4>
+                            <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5;">当代最具影响力的说唱歌手之一，《DAMN.》专辑展示了他深度的歌词和创新的制作。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 学术与活动部分 -->
+    <section class="section" id="academics">
+        <div class="container">
+            <h2 class="section-title gradient-text">学术与课外活动</h2>
+            <p class="section-subtitle">平衡学术追求与个人兴趣，在STEM领域不断探索的同时，通过音乐和宠物护理丰富生活体验。</p>
+            
+            <div class="academics-container">
+                <div class="academic-card fade-in card-3d">
+                    <h3><i class="fas fa-graduation-cap"></i> 学术成就</h3>
+                    <div class="academic-list">
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-science"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">STEM高级课程</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">物理、高等数学、工程学核心课程，GPA 3.9/4.0</div>
+                            </div>
+                        </div>
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">学科竞赛荣誉</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">物理杯银奖，AMC12晋级</div>
+                            </div>
+                        </div>
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-car-side"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">工程项目实践</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">研究汽车模型构造、参与小型车辆改装项目、学习发动机基础原理</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="academic-card fade-in card-3d">
+                    <h3><i class="fas fa-guitar"></i> 音乐活动</h3>
+                    <div class="academic-list">
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-piano"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">多种乐器演奏</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">钢琴、双排键、长笛演奏，钢琴八级，喜欢唱歌和音乐创作</div>
+                            </div>
+                        </div>
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">音乐偶像</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">Justin Bieber & Kendrick Lamar 的忠实粉丝</div>
+                            </div>
+                        </div>
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">音乐创作</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">创作多首原创音乐，尝试将流行音乐元素与古典乐器结合</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="academic-card fade-in card-3d">
+                    <h3><i class="fas fa-bullseye"></i> 未来目标</h3>
+                    <div class="academic-list">
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">大学专业方向</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">申请国内外顶尖院校的车辆工程或汽车工程专业</div>
+                            </div>
+                        </div>
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">研究兴趣领域</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">电动汽车技术、汽车空气动力学、智能驾驶辅助系统</div>
+                            </div>
+                        </div>
+                        <div class="academic-item hover-shake">
+                            <div class="academic-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 4px;">个人愿景</div>
+                                <div style="color: var(--text-tertiary); font-size: 14.5px;">融合工程技术与人本设计，创造改善出行体验的智能解决方案</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Olive的相册部分（简化版） -->
+    <section class="section" id="olive-gallery">
+        <div class="container">
+            <h2 class="section-title gradient-text">Olive的相册</h2>
+            <p class="section-subtitle">记录Olive的可爱瞬间，每一张照片都是美好的回忆。</p>
+            
+            <div class="olive-gallery">
+                <div class="gallery-intro fade-in">
+                    <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">Olive是2024年10月3日出生的小天使，一只纯白色的卷毛比熊犬。她活泼可爱，总是能给我们的生活带来欢乐。</p>
+                </div>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item fade-in hover-shake">
+                        <!-- 正面照 -->
+                        <img src="olive.jpg" alt="Olive正面照">
+                        <div class="gallery-caption">
+                            <h4>正面照</h4>
+                            <p>Olive的正脸照，大大的眼睛和蓬松的卷毛，可爱极了！</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item fade-in hover-shake">
+                        <!-- 吃东西的照片 -->
+                        <img src="olive-eating.jpg" alt="Olive吃东西">
+                        <div class="gallery-caption">
+                            <h4>享受美食</h4>
+                            <p>Olive最爱吃东西的瞬间，专注的表情特别可爱！</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item fade-in hover-shake">
+                        <!-- 玩球的照片 -->
+                        <img src="olive-playing-ball.jpg" alt="Olive玩球">
+                        <div class="gallery-caption">
+                            <h4>玩球时光</h4>
+                            <p>Olive最喜欢的黄色小球，可以玩一整天都不累。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item fade-in hover-shake">
+                        <!-- 另一张正面照 -->
+                        <img src="olive-2.jpg" alt="Olive另一张照片">
+                        <div class="gallery-caption">
+                            <h4>快乐时光</h4>
+                            <p>Olive开心时的表情，总是能让人的心情变好。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="olive-simple-info">
+                    <div class="olive-info-item fade-in hover-shake">
+                        <i class="fas fa-birthday-cake"></i>
+                        <h4>出生日期</h4>
+                        <p>2024年10月3日</p>
+                    </div>
+                    
+                    <div class="olive-info-item fade-in hover-shake">
+                        <i class="fas fa-paw"></i>
+                        <h4>品种</h4>
+                        <p>白色卷毛比熊犬</p>
+                    </div>
+                    
+                    <div class="olive-info-item fade-in hover-shake">
+                        <i class="fas fa-heart"></i>
+                        <h4>性格</h4>
+                        <p>活泼、亲人、聪明</p>
+                    </div>
+                    
+                    <div class="olive-info-item fade-in hover-shake">
+                        <i class="fas fa-home"></i>
+                        <h4>家庭地位</h4>
+                        <p>家庭小天使</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 关于我和Olive部分 -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title gradient-text">关于方子睿 & Olive</h2>
+            <p class="section-subtitle">两个生命，一段特别的缘分。了解我们的故事，以及如何相互陪伴、共同成长。</p>
+            
+            <div class="about-container">
+                <div class="about-card fade-in card-3d">
+                    <h3><i class="fas fa-user"></i> 关于方子睿</h3>
+                    <div class="about-content">
+                        <p>我是一名对汽车工程充满热情的高中生，从小就被汽车的机械结构和设计美学所吸引。我相信工程不仅是严谨的科学，更是驱动社会前进的实践艺术，能够将创新想法转化为改善人们出行的实际方案。</p>
+                        <p>音乐是我生活中重要的平衡点。我会弹钢琴、双排键和长笛，也喜欢唱歌。我是Justin Bieber的忠实粉丝，同时也欣赏Kendrick Lamar的音乐深度。音乐让我能够表达复杂情感，同时也锻炼了我的专注力、创造力和耐心——这些品质在解决工程问题时同样宝贵。</p>
+                        <p>我正在积极准备大学申请，目标是攻读车辆工程或汽车工程专业。我希望将来能够参与到汽车工业的变革中，无论是新能源动力、智能驾驶还是更可持续的交通工具设计。</p>
+                        <p>Olive的到来给我的生活带来了新的节奏和欢乐。她的单纯与忠诚提醒我，在追求技术的同时，不要忘记生活中的简单美好。照顾她也让我学会了时间管理和责任感。</p>
+                    </div>
+                </div>
+                
+                <div class="about-card fade-in card-3d">
+                    <h3><i class="fas fa-dog"></i> 关于Olive</h3>
+                    <div class="about-content">
+                        <p>Olive是2024年10月3日来到这个世界的小可爱，一只纯白色的卷毛比熊犬。比熊犬以聪明、活泼和温顺著称，而Olive完美地体现了这些特质。她是我生活中最温暖的陪伴，也是我创意的灵感源泉。</p>
+                        <p>虽然Olive还很年幼，但她已经展现出惊人的学习能力和好奇心。她喜欢探索新环境，对声音特别敏感（也许是因为家里常有音乐声），总是在我需要休息时用她独特的方式给我带来欢乐。</p>
+                        <p>照顾Olive让我理解了无条件的爱与责任。从制定喂养时间表、学习基础训练，到定期护理她那身蓬松的卷毛，这些日常琐事让我的生活更加规律和有目标。她的存在也让我更加关注动物福利和生命教育。</p>
+                        
+                        <div class="pet-details">
+                            <div class="pet-detail hover-shake">
+                                <div class="pet-detail-icon">
+                                    <i class="fas fa-birthday-cake"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; margin-bottom: 4px;">出生日期</div>
+                                    <div style="color: var(--text-tertiary); font-size: 14.5px;">2024年10月3日 · 天秤座 · 追求平衡与和谐</div>
+                                </div>
+                            </div>
+                            
+                            <div class="pet-detail hover-shake">
+                                <div class="pet-detail-icon">
+                                    <i class="fas fa-paw"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; margin-bottom: 4px;">品种与特征</div>
+                                    <div style="color: var(--text-tertiary); font-size: 14.5px;">纯白卷毛比熊犬 · 活泼可爱 · 双层蓬松卷毛</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 联系部分 -->
+    <section class="section" id="contact">
+        <div class="container">
+            <h2 class="section-title gradient-text">联系我</h2>
+            <p class="section-subtitle">对汽车工程、音乐创作感兴趣，或者想交流宠物养护经验？欢迎联系我！</p>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item fade-in hover-shake">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>邮箱</h4>
+                            <p>fangzirui_07@hotmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item fade-in hover-shake">
+                        <div class="contact-icon">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>学校</h4>
+                            <p>瑞安中学国际部 · 高三理科班</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link hover-shake" title="学习博客">
+                            <i class="fas fa-book"></i>
+                        </a>
+                        <a href="#" class="social-link hover-shake" title="音乐作品">
+                            <i class="fas fa-music"></i>
+                        </a>
+                        <a href="#" class="social-link hover-shake" title="GitHub项目">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link hover-shake" title="Olive的日常">
+                            <i class="fas fa-paw"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form fade-in card-3d">
+                    <h3>发送消息</h3>
+                    <p class="form-desc">欢迎交流学习心得、音乐创作，或者分享您的宠物故事！</p>
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-input ripple" placeholder="您的姓名" required>
+                        
+                        <input type="email" class="form-input ripple" placeholder="您的邮箱" required>
+                        
+                        <select class="form-select ripple" required>
+                            <option value="">选择话题</option>
+                            <option value="engineering">汽车工程与STEM学习</option>
+                            <option value="music">音乐创作与演奏</option>
+                            <option value="kendrick">Kendrick Lamar音乐</option>
+                            <option value="justin">Justin Bieber音乐</option>
+                            <option value="pets">宠物护理与训练</option>
+                            <option value="study">学习经验与大学申请</option>
+                            <option value="other">其他话题</option>
+                        </select>
+                        
+                        <textarea class="form-textarea ripple" placeholder="您的消息..." required></textarea>
+                        
+                        <button class="btn btn-primary form-submit ripple">
+                            <i class="fas fa-paper-plane"></i>
+                            发送消息
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <span class="footer-emoji blink">🎓🐾🚗🎵</span>
+                    <p>© 2024 方子睿 & Olive. 用代码、音乐和爪子制作 | 保持好奇，持续创造</p>
+                </div>
+                <div class="footer-nav">
+                    <a href="#home">首页</a>
+                    <a href="#interests">我的兴趣</a>
+                    <a href="#playlist">音乐歌单</a>
+                    <a href="#olive-gallery">Olive相册</a>
+                    <a href="#about">关于我们</a>
+                    <a href="#contact">联系</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 图片查看模态框 -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Olive的照片</h3>
+                <button class="close-modal" id="closeImageModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <img id="modalImage" src="" alt="" style="max-width: 100%; max-height: 400px; border-radius: var(--radius-small);">
+                    <div style="margin-top: 20px;">
+                        <h4 id="modalImageTitle" style="margin-bottom: 10px;"></h4>
+                        <p id="modalImageDesc" style="color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== 页面加载动画 ======
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                
+                // 页面加载后开始打字机效果
+                const typewriter = document.querySelector('.typewriter');
+                if (typewriter) {
+                    typewriter.style.width = '100%';
+                    typewriter.style.borderRight = 'none';
+                }
+                
+                // 开始粒子动画
+                initParticles();
+            }, 1500);
+        });
+        
+        // ====== 鼠标跟随粒子效果 ======
+        const particlesContainer = document.getElementById('particlesContainer');
+        let mouseX = 0;
+        let mouseY = 0;
+        let particles = [];
+        
+        function initParticles() {
+            // 创建粒子
+            for (let i = 0; i < 15; i++) {
+                createParticle();
+            }
+            
+            // 监听鼠标移动
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            // 动画循环
+            animateParticles();
+        }
+        
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // 随机位置和大小
+            const size = Math.random() * 4 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // 随机颜色
+            const colors = ['#38B2FF', '#7ACFFF', '#FF7B9C'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.backgroundColor = color;
+            
+            // 随机起始位置
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            
+            particlesContainer.appendChild(particle);
+            
+            // 保存粒子数据
+            particles.push({
+                element: particle,
+                x: parseFloat(particle.style.left),
+                y: parseFloat(particle.style.top),
+                size: size,
+                speedX: Math.random() * 2 - 1,
+                speedY: Math.random() * 2 - 1,
+                color: color
+            });
+        }
+        
+        function animateParticles() {
+            particles.forEach(particle => {
+                // 向鼠标方向移动
+                const dx = mouseX - particle.x;
+                const dy = mouseY - particle.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // 如果粒子离鼠标很近，则跟随鼠标
+                if (distance < 150) {
+                    particle.x += dx * 0.03;
+                    particle.y += dy * 0.03;
+                } else {
+                    // 否则随机移动
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    // 边界反弹
+                    if (particle.x < 0 || particle.x > window.innerWidth) {
+                        particle.speedX *= -1;
+                    }
+                    if (particle.y < 0 || particle.y > window.innerHeight) {
+                        particle.speedY *= -1;
+                    }
+                }
+                
+                // 更新粒子位置
+                particle.element.style.left = `${particle.x}px`;
+                particle.element.style.top = `${particle.y}px`;
+                
+                // 根据距离调整透明度
+                const opacity = Math.max(0.1, 0.5 - distance / 300);
+                particle.element.style.opacity = opacity;
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        // ====== 滚动视差效果 ======
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+            
+            parallaxElements.forEach(element => {
+                const speed = element.dataset.speed || 0.5;
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+        
+        // ====== 按钮波纹效果 ======
+        const buttons = document.querySelectorAll('.ripple');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                // 移除已有的波纹效果
+                const existingRipple = this.querySelector('.ripple-effect');
+                if (existingRipple) {
+                    existingRipple.remove();
+                }
+                
+                // 创建新的波纹
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple-effect');
+                
+                // 设置波纹位置
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                this.appendChild(ripple);
+                
+                // 动画结束后移除波纹
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // ====== 滚动动画 ======
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        function checkFade() {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', checkFade);
+        window.addEventListener('load', checkFade);
+        
+        // ====== 自定义光标功能 ======
+        const cursor = document.getElementById('customCursor');
+        const cursorHint = document.getElementById('cursorHint');
+        
+        // 鼠标移动时更新光标位置
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+        });
+        
+        // 悬停时光标放大
+        function setHoverCursor() {
+            cursor.classList.add('cursor-hover');
+        }
+        
+        // 移除悬停效果
+        function removeHoverCursor() {
+            cursor.classList.remove('cursor-hover');
+        }
+        
+        // 点击时光标缩小
+        function setClickCursor() {
+            cursor.classList.add('cursor-click');
+            setTimeout(() => {
+                cursor.classList.remove('cursor-click');
+            }, 150);
+        }
+        
+        // 设置光标提示
+        function setCursorHint(text) {
+            cursorHint.textContent = text;
+        }
+        
+        // 清除光标提示
+        function clearCursorHint() {
+            cursorHint.textContent = '';
+        }
+        
+        // ====== 光标交互逻辑 ======
+        
+        // 所有交互元素
+        const interactiveElements = document.querySelectorAll('a, button, .btn, .nav a, .social-link, .interest-card, .contact-icon, input, select, textarea, .pet-image, .pet-card, .pet-detail, .btn-olive, .avatar-image, .song-list-item, .gallery-item, .olive-info-item, #spotifyBtn, #expandPlaylistBtn');
+        
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                setHoverCursor();
+                
+                // 根据元素类型设置提示
+                if (element.tagName === 'A' || element.classList.contains('btn')) {
+                    const linkText = element.textContent.trim() || element.getAttribute('title') || '链接';
+                    setCursorHint(linkText.substring(0, 15));
+                } else if (element.tagName === 'BUTTON') {
+                    const buttonText = element.textContent.trim() || '按钮';
+                    setCursorHint(buttonText.substring(0, 15));
+                } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT') {
+                    setCursorHint('输入');
+                } else if (element.classList.contains('pet-image') || element.classList.contains('pet-card') || element.classList.contains('pet-detail')) {
+                    setCursorHint('Olive 🐾');
+                } else if (element.classList.contains('avatar-image')) {
+                    setCursorHint('方子睿 📸');
+                } else if (element.classList.contains('song-list-item')) {
+                    setCursorHint('歌曲详情 🎵');
+                } else if (element.classList.contains('gallery-item')) {
+                    setCursorHint('查看照片 📷');
+                } else if (element.classList.contains('olive-info-item')) {
+                    setCursorHint('Olive信息 ℹ️');
+                } else if (element.id === 'expandPlaylistBtn') {
+                    setCursorHint('展开/收起歌单 📜');
+                }
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                removeHoverCursor();
+                clearCursorHint();
+            });
+            
+            element.addEventListener('click', setClickCursor);
+        });
+        
+        // 文档其他部分恢复默认光标
+        document.addEventListener('mouseover', (e) => {
+            // 如果鼠标不在任何特殊元素上，恢复默认光标
+            if (!e.target.closest('a, button, .btn, .nav a, .social-link, .interest-card, .contact-icon, input, select, textarea, .pet-image, .pet-card, .pet-detail, .btn-olive, .avatar-image, .song-list-item, .gallery-item, .olive-info-item, #spotifyBtn, #expandPlaylistBtn')) {
+                removeHoverCursor();
+                clearCursorHint();
+            }
+        });
+        
+        // 页面点击时添加点击效果
+        document.addEventListener('click', (e) => {
+            // 如果不是在特殊元素上点击，也添加点击效果
+            if (!e.target.closest('a, button, .btn, .nav a, .social-link, .interest-card, .contact-icon, input, select, textarea, .pet-image, .pet-card, .pet-detail, .btn-olive, .avatar-image, .song-list-item, .gallery-item, .olive-info-item, #spotifyBtn, #expandPlaylistBtn')) {
+                setClickCursor();
+            }
+        });
+        
+        // ====== 主题切换功能 ======
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+
+        if (currentTheme === 'dark') {
+            document.body.classList.add('theme-dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('theme-dark');
+            const isDark = document.body.classList.contains('theme-dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+            themeToggle.style.transform = 'scale(0.9) rotate(90deg)';
+            setTimeout(() => {
+                themeToggle.style.transform = '';
+            }, 300);
+            
+            // 添加光标点击效果
+            setClickCursor();
+        });
+        
+        // ====== 页面加载效果 ======
+        window.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('visible');
+                }, index * 150);
+            });
+            
+            updateActiveNavItem();
+            
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.8s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // 初始化光标位置在屏幕中央
+            cursor.style.left = '50%';
+            cursor.style.top = '50%';
+        });
+        
+        // ====== 平滑滚动 ======
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 120,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 更新活动状态
+                    document.querySelectorAll('.nav a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+        
+        // ====== 导航栏滚动效果 ======
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 100) {
+                nav.style.opacity = '0.98';
+                nav.style.backdropFilter = 'blur(30px) saturate(200%)';
+                nav.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.15)';
+            } else {
+                nav.style.opacity = '1';
+                nav.style.backdropFilter = 'blur(25px) saturate(180%)';
+                nav.style.boxShadow = '0 10px 40px rgba(56, 178, 255, 0.12)';
+            }
+            
+            updateActiveNavItem();
+            
+            checkFade();
+        });
+        
+        function updateActiveNavItem() {
+            const sections = document.querySelectorAll('section, .main');
+            const navLinks = document.querySelectorAll('.nav a');
+            
+            let currentSectionId = '';
+            let closestDistance = Infinity;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                const sectionBottom = sectionTop + section.clientHeight;
+                const scrollPosition = window.scrollY + 100;
+                
+                if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                    currentSectionId = '#' + (section.id || 'home');
+                }
+                
+                const distance = Math.abs(sectionTop - scrollPosition);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    currentSectionId = '#' + (section.id || 'home');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // ====== 表单提交 ======
+        const contactForm = document.querySelector('.form-submit');
+        contactForm.addEventListener('click', () => {
+            const form = document.querySelector('.contact-form');
+            const inputs = form.querySelectorAll('.form-input, .form-textarea, .form-select');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim() && input.tagName !== 'SELECT') {
+                    isValid = false;
+                    input.style.borderColor = 'var(--accent)';
+                    input.style.boxShadow = '0 0 0 3px rgba(255, 123, 156, 0.2)';
+                    
+                    input.style.animation = 'shake 0.5s ease';
+                    setTimeout(() => {
+                        input.style.animation = '';
+                    }, 500);
+                } else {
+                    input.style.borderColor = 'var(--border)';
+                    input.style.boxShadow = 'none';
+                }
+                
+                if (input.tagName === 'SELECT' && !input.value) {
+                    isValid = false;
+                    input.style.borderColor = 'var(--accent)';
+                    input.style.boxShadow = '0 0 0 3px rgba(255, 123, 156, 0.2)';
+                }
+            });
+            
+            if (isValid) {
+                contactForm.innerHTML = '<i class="fas fa-check"></i> 发送成功！';
+                contactForm.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+                contactForm.disabled = true;
+                
+                contactForm.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    contactForm.style.transform = 'scale(1)';
+                }, 200);
+                
+                setTimeout(() => {
+                    alert('感谢您的消息！我会在1-3个工作日内回复您。也欢迎分享您的学习心得、音乐喜好或宠物故事！🎓🐾');
+                    inputs.forEach(input => {
+                        if (input.tagName !== 'SELECT') {
+                            input.value = '';
+                        } else {
+                            input.selectedIndex = 0;
+                        }
+                        input.style.borderColor = 'var(--border)';
+                        input.style.boxShadow = 'none';
+                    });
+                    contactForm.innerHTML = '<i class="fas fa-paper-plane"></i> 发送消息';
+                    contactForm.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+                    contactForm.disabled = false;
+                }, 1500);
+            } else {
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes shake {
+                        0%, 100% { transform: translateX(0); }
+                        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                        20%, 40%, 60%, 80% { transform: translateX(5px); }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                const errorMsg = document.createElement('div');
+                errorMsg.textContent = '请填写所有必填字段';
+                errorMsg.style.color = 'var(--accent)';
+                errorMsg.style.fontSize = '14px';
+                errorMsg.style.marginTop = '10px';
+                errorMsg.style.fontWeight = '500';
+                errorMsg.style.animation = 'fadeIn 0.3s ease';
+                
+                const existingError = form.querySelector('.form-error');
+                if (existingError) {
+                    existingError.remove();
+                }
+                
+                errorMsg.classList.add('form-error');
+                form.querySelector('.form-group').appendChild(errorMsg);
+                
+                setTimeout(() => {
+                    if (errorMsg.parentNode) {
+                        errorMsg.remove();
+                    }
+                }, 3000);
+            }
+        });
+        
+        // ====== 宠物卡片交互 ======
+        const petCard = document.querySelector('.pet-card');
+        const petPhoto = document.querySelector('.pet-photo');
+        
+        petCard.addEventListener('mouseenter', () => {
+            petCard.style.transform = 'translateY(-10px) rotateX(8deg)';
+            petCard.style.boxShadow = 'var(--shadow-hover)';
+        });
+        
+        petCard.addEventListener('mouseleave', () => {
+            petCard.style.transform = 'translateY(0) rotateX(0)';
+            petCard.style.boxShadow = 'var(--shadow)';
+        });
+        
+        // 点击宠物照片时有反应
+        if (petPhoto) {
+            petPhoto.addEventListener('click', () => {
+                petPhoto.style.transform = 'scale(1.1)';
+                petPhoto.style.transition = 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1.5)';
+                
+                setTimeout(() => {
+                    petPhoto.style.transform = 'scale(1)';
+                    petPhoto.style.transition = 'transform 0.5s ease';
+                }, 300);
+                
+                const messages = [
+                    '汪汪！我是Olive 🐾',
+                    '喜欢我的照片吗？📸',
+                    '陪我玩嘛！🎾',
+                    '方子睿是我最好的人类！❤️',
+                    '饿啦~有什么好吃的吗？🍖'
+                ];
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                
+                const message = document.createElement('div');
+                message.textContent = randomMessage;
+                message.style.position = 'absolute';
+                message.style.top = '15px';
+                message.style.left = '50%';
+                message.style.transform = 'translateX(-50%)';
+                message.style.background = 'var(--primary)';
+                message.style.color = 'white';
+                message.style.padding = '10px 20px';
+                message.style.borderRadius = '25px';
+                message.style.fontSize = '15px';
+                message.style.fontWeight = '600';
+                message.style.boxShadow = '0 6px 20px rgba(56, 178, 255, 0.4)';
+                message.style.zIndex = '1000';
+                message.style.animation = 'fadeInOut 2.5s forwards';
+                message.style.cursor = 'default';
+                message.style.userSelect = 'none';
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; transform: translateX(-50%) translateY(-15px) scale(0.8); }
+                        20% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+                        80% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+                        100% { opacity: 0; transform: translateX(-50%) translateY(-15px) scale(0.8); }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                const existingMessage = petCard.querySelector('.pet-message');
+                if (existingMessage) {
+                    existingMessage.remove();
+                }
+                
+                message.classList.add('pet-message');
+                petCard.appendChild(message);
+                
+                setTimeout(() => {
+                    if (message.parentNode) {
+                        message.parentNode.removeChild(message);
+                    }
+                }, 2500);
+            });
+        }
+        
+        // ====== 个人头像交互 ======
+        const avatarImage = document.querySelector('.avatar-image');
+        if (avatarImage) {
+            avatarImage.addEventListener('click', () => {
+                const avatarPhoto = avatarImage.querySelector('.avatar-photo');
+                if (avatarPhoto) {
+                    avatarPhoto.style.transform = 'scale(1.1)';
+                    avatarPhoto.style.transition = 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1.5)';
+                    
+                    setTimeout(() => {
+                        avatarPhoto.style.transform = 'scale(1)';
+                        avatarPhoto.style.transition = 'transform 0.5s ease';
+                    }, 300);
+                    
+                    const messages = [
+                        '你好！我是方子睿',
+                        '喜欢汽车和音乐！🚗🎵',
+                        '正在努力成为汽车工程师',
+                        '和Olive一起成长',
+                        '梦想创造未来的交通工具'
+                    ];
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    
+                    const message = document.createElement('div');
+                    message.textContent = randomMessage;
+                    message.style.position = 'absolute';
+                    message.style.top = '-60px';
+                    message.style.left = '50%';
+                    message.style.transform = 'translateX(-50%)';
+                    message.style.background = 'var(--primary)';
+                    message.style.color = 'white';
+                    message.style.padding = '10px 20px';
+                    message.style.borderRadius = '25px';
+                    message.style.fontSize = '14px';
+                    message.style.fontWeight = '600';
+                    message.style.boxShadow = '0 6px 20px rgba(56, 178, 255, 0.4)';
+                    message.style.zIndex = '1000';
+                    message.style.animation = 'fadeInOut 2.5s forwards';
+                    message.style.cursor = 'default';
+                    message.style.userSelect = 'none';
+                    
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes fadeInOut {
+                            0% { opacity: 0; transform: translateX(-50%) translateY(-15px) scale(0.8); }
+                            20% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+                            80% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+                            100% { opacity: 0; transform: translateX(-50%) translateY(-15px) scale(0.8); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                    
+                    const existingMessage = document.querySelector('.avatar-message');
+                    if (existingMessage) {
+                        existingMessage.remove();
+                    }
+                    
+                    message.classList.add('avatar-message');
+                    avatarImage.parentNode.appendChild(message);
+                    
+                    setTimeout(() => {
+                        if (message.parentNode) {
+                            message.parentNode.removeChild(message);
+                        }
+                    }, 2500);
+                }
+            });
+        }
+        
+        // ====== 添加滚动到顶部的按钮 ======
+        const scrollTopBtn = document.createElement('button');
+        scrollTopBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        scrollTopBtn.style.position = 'fixed';
+        scrollTopBtn.style.bottom = '30px';
+        scrollTopBtn.style.right = '30px';
+        scrollTopBtn.style.width = '50px';
+        scrollTopBtn.style.height = '50px';
+        scrollTopBtn.style.background = 'var(--surface)';
+        scrollTopBtn.style.border = '1px solid var(--border)';
+        scrollTopBtn.style.borderRadius = '50%';
+        scrollTopBtn.style.color = 'var(--text)';
+        scrollTopBtn.style.fontSize = '20px';
+        scrollTopBtn.style.cursor = 'none';
+        scrollTopBtn.style.zIndex = '999';
+        scrollTopBtn.style.opacity = '0';
+        scrollTopBtn.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        scrollTopBtn.style.boxShadow = 'var(--shadow)';
+        scrollTopBtn.style.display = 'flex';
+        scrollTopBtn.style.alignItems = 'center';
+        scrollTopBtn.style.justifyContent = 'center';
+        scrollTopBtn.title = '回到顶部';
+        
+        // 为滚动按钮添加光标交互
+        scrollTopBtn.addEventListener('mouseenter', () => {
+            setHoverCursor();
+            setCursorHint('回到顶部');
+        });
+        
+        scrollTopBtn.addEventListener('mouseleave', () => {
+            removeHoverCursor();
+            clearCursorHint();
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            setClickCursor();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        document.body.appendChild(scrollTopBtn);
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollTopBtn.style.opacity = '1';
+                scrollTopBtn.style.transform = 'translateY(0)';
+            } else {
+                scrollTopBtn.style.opacity = '0';
+                scrollTopBtn.style.transform = 'translateY(20px)';
+            }
+        });
+        
+        // ====== 歌单折叠/展开功能 ======
+        const expandPlaylistBtn = document.getElementById('expandPlaylistBtn');
+        const playlistContent = document.getElementById('playlistContent');
+        
+        if (expandPlaylistBtn && playlistContent) {
+            expandPlaylistBtn.addEventListener('click', function() {
+                // 切换展开/收起状态
+                playlistContent.classList.toggle('playlist-expanded');
+                
+                // 更新按钮文本
+                if (playlistContent.classList.contains('playlist-expanded')) {
+                    this.innerHTML = '<i class="fas fa-chevron-up"></i> 收起歌单';
+                } else {
+                    this.innerHTML = '<i class="fas fa-chevron-down"></i> 展开查看完整歌单 (15首歌曲)';
+                }
+            });
+        }
+        
+        // ====== 歌曲项悬停效果 ======
+        const songItems = document.querySelectorAll('.song-list-item');
+        songItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                // 可以在这里添加额外的悬停效果
+            });
+        });
+        
+        // Spotify按钮点击事件
+        const spotifyBtn = document.getElementById('spotifyBtn');
+        if (spotifyBtn) {
+            spotifyBtn.addEventListener('click', () => {
+                // 这里可以链接到你的Spotify个人主页或歌单
+                alert('这是我的音乐推荐！🎵\n\n目前主要推荐：\n1. Justin Bieber - Justice (完整专辑)\n2. Kendrick Lamar - DAMN.\n3. 我的原创音乐\n\n欢迎分享你喜欢的音乐！');
+            });
+        }
+        
+        // ====== Olive相册图片点击功能 ======
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const imageModal = document.getElementById('imageModal');
+        const closeImageModal = document.getElementById('closeImageModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImage = document.getElementById('modalImage');
+        const modalImageTitle = document.getElementById('modalImageTitle');
+        const modalImageDesc = document.getElementById('modalImageDesc');
+        
+        galleryItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const imgSrc = this.querySelector('img').src;
+                const title = this.querySelector('h4').textContent;
+                const desc = this.querySelector('p').textContent;
+                
+                // 填充模态框内容
+                modalTitle.textContent = 'Olive的照片';
+                modalImage.src = imgSrc;
+                modalImageTitle.textContent = title;
+                modalImageDesc.textContent = desc;
+                
+                // 显示模态框
+                imageModal.classList.add('active');
+            });
+        });
+        
+        // 关闭图片模态框
+        closeImageModal.addEventListener('click', () => {
+            imageModal.classList.remove('active');
+        });
+        
+        // 点击模态框背景关闭
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.classList.remove('active');
+            }
+        });
+        
+        // ====== 添加Olive随机表情功能 ======
+        function addOliveExpression() {
+            const expressions = ['🐾', '❤️', '🎾', '🍖', '😴', '🏃', '🎵', '🌟', '😄', '💤'];
+            const randomExpression = expressions[Math.floor(Math.random() * expressions.length)];
+            
+            const expressionDiv = document.createElement('div');
+            expressionDiv.innerHTML = randomExpression;
+            expressionDiv.style.position = 'fixed';
+            expressionDiv.style.fontSize = '30px';
+            expressionDiv.style.zIndex = '9997';
+            expressionDiv.style.pointerEvents = 'none';
+            expressionDiv.style.animation = 'floatUp 2s forwards';
+            
+            // 随机位置
+            const x = Math.random() * (window.innerWidth - 50);
+            const y = window.innerHeight;
+            expressionDiv.style.left = `${x}px`;
+            expressionDiv.style.top = `${y}px`;
+            
+            document.body.appendChild(expressionDiv);
+            
+            // 添加动画样式
+            if (!document.querySelector('#oliveAnimations')) {
+                const style = document.createElement('style');
+                style.id = 'oliveAnimations';
+                style.textContent = `
+                    @keyframes floatUp {
+                        0% { opacity: 0; transform: translateY(0) scale(0.5); }
+                        10% { opacity: 1; transform: translateY(-10px) scale(1); }
+                        100% { opacity: 0; transform: translateY(-150px) scale(1.2); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // 动画结束后移除
+            setTimeout(() => {
+                if (expressionDiv.parentNode) {
+                    expressionDiv.parentNode.removeChild(expressionDiv);
+                }
+            }, 2000);
+        }
+        
+        // 每20-40秒随机显示一个Olive表情
+        setInterval(addOliveExpression, Math.random() * 20000 + 20000);
+        
+        // 点击页面任何地方也有机会显示Olive表情
+        document.addEventListener('click', (e) => {
+            // 10%的几率触发
+            if (Math.random() < 0.1 && !e.target.closest('.nav, .theme-toggle, .modal, .music-player-notification')) {
+                addOliveExpression();
+            }
+        });
+    </script>
+</body>
+</html>
